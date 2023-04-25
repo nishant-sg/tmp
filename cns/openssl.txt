@@ -1,0 +1,69 @@
+Syntax: To encode with base64, the following command is used:
+openssl enc -base64 -in input-file -out output-file
+To decode with base64, the following command is used:
+openssl enc -base64 -d -in input-file -out output-file
+
+Syntax: openssl passwd [options]
+Where the possible options are:
+-crypt: to encrypt
+-1: to change the standard encryption algorithm from DES to MD5
+-salt salt: to add the salt.
+
+The key generation is performed using:
+openssl genrsa -out key.pem size
+
+Syntax: To obtain information on a key, we can use:
+openssl rsa -in key.pem -text -noout
+
+In order
+to save the key in a safe way, a symmetric encryption algorithm (such as triple-DES) can be used:
+openssl genrsa -des3 -out private-key size
+
+Syntax: To retrieve the public key associated with a private key, we use:
+openssl rsa -in private-key -pubout -out public-key
+
+To encrypt using a public key, we use:
+openssl rsautl -encrypt -in plaintext -inkey public-key -pubin -out cipher
+To decrypt, we use option
+-decrypt.
+
+Syntax: To encrypt using DES, we use:
+openssl enc -des -in plaintext -out cipher
+To decrypt with DES, we use:
+openssl enc -des -d -in cipher -out plaintext
+
+Syntax: To hash a file, we use:
+openssl dgst -md5 -out hash file
+Syntax: To sign a hash, we use:
+openssl rsautl -sign -in hash -inkey key -out signature
+
+To verify a signature, we
+use: openssl rsautl -verify -in signature -pubin -inkey public-key -out hash2
+
+Certificate Generation
+openssl req -new -key key -out request
+
+Syntax: To visualize a certificate request or a certificate, we use:
+openssl x509 -in certificate -text -noout
+
+Syntax: To autosign a certificate request, we use:
+openssl x509 -req -in request -signkey private-key -out certificate
+
+Syntax: To sign a certificate request, we use:
+openssl x509 -days duration -CAserial serial -CA certificate -CAkey key -in request -req -out
+certificate
+
+
+Syntax: To verify a certificate, use:
+openssl verify -CAfile ca-certificate certificate
+
+Use syntax like in the following
+$ openssl aes-256-ecb -e -in file.txt -out cipher_ecb.bin -nosalt
+After use
+$xxd cipher_ecb.bin
+Observe the output you will able to understand the known plaintext
+Same way find another mode of operation CBC.
+$ openssl aes-256-cbc -e -in file.txt -out cipher_cbc.bin -nosalt
+After use
+$xxd cipher_cbc.bin
+
